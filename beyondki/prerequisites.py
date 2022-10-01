@@ -1,14 +1,29 @@
-def is_prerequisites_tag(tag: str) -> str:
-    return tag.startswith('pre:')
+"""Functions for parsing Anki note prerequisites from tags."""
+from typing import Optional, Iterable
 
-def strip_pre_prefix(prereq_tag: str) -> str:
-    assert is_prerequisites_tag(prereq_tag)
-    return prereq_tag[4:]
+PREFIX = "pre:"
+DELIM = " "
 
-def extract_prerequisites_tags(tags_str: str) -> list[str]:
-    # Convert to list.
-    tags = tags_str.strip().split(' ')
-    prereq_tags = list(filter(is_prerequisites_tag, tags))
-    prereq_tags = list(map(strip_pre_prefix, prereq_tags))
 
-    return prereq_tags
+def parse_prerequisite_tag(tag: str) -> Optional[str]:
+    """
+    Attempt to parse a prerequisite from a single raw tag.
+
+    Return the prerequisite as a string if the tag is, in fact, a prerequisite.
+    Otherwise, return ``None``.
+    """
+    if tag.startswith(PREFIX):
+        return tag[len(PREFIX) :]
+    return None
+
+
+def extract_prerequisite_tags(s: str) -> list[str]:
+    """Parse prerequisite tags from a string."""
+    # Strip leading and trailing whitespace, and split on the tag delimiter.
+    tags: list[str] = s.strip().split(DELIM)
+
+    # Try to parse each tag as a prerequisite.
+    tags: Iterable[Optional[str]] = map(parse_prerequisite_tag, tags)
+
+    # Filter out the ``None`` values, i.e. non-prereq tags.
+    return list(filter(lambda t: t is not None, tags))
