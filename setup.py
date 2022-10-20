@@ -7,8 +7,8 @@ setuptools.setup(
     version="0.0.1a",
     description="",
     url="",
-    author="",
+    author="Paul Wintz",
     author_email="",
-    license="",
+    license="GNU General Public License version 3",
     packages=["beyondki"],
 )
