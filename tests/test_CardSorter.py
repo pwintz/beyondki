@@ -4,7 +4,7 @@ from typing import List
 import pytest
 from beartype import beartype
 
-from beyondki.sorting import CardSorter
+from beyondki.sorting import CardSorter, PrerequisiteLoopError
 
 
 def cid_order(cid):
@@ -78,6 +78,20 @@ def test_one_prereq():
     assert_equal_with_order(card_sorter.dependents_graph, {2: [1], 1: []})
 
 
+def test_prereq_loop_raises_error():
+    cids = [1, 2]
+
+    def prereq_loop(cid):
+        if cid == 1:
+            return [2]
+        elif cid == 2:
+            return [1]
+
+    sorter = CardSorter(cids, prereq_loop, cid_order)
+    with pytest.raises(PrerequisiteLoopError):
+        sorter.sort()
+
+
 def test_dependent_graph_values_are_sorted():
     cids = [2, 3, 1]
 
@@ -100,15 +114,3 @@ def test_error_if_prereqs_not_a_list():
     with pytest.raises(ValueError):
         # noinspection PyTypeChecker
         CardSorter([1, 2], return_not_a_list, cid_order)
-
-
-# def test_error_if_cids_not_a_list():
-#     cids = 1  # Not a list.
-#
-#     # noinspection PyUnusedLocal
-#     def return_a_list(cid):
-#         return [1]
-#
-#     with pytest.raises(beartype.roar.BeartypeCallHintParamViolation):
-#         # noinspection PyTypeChecker
-#         CardSorter(cids, return_a_list, cid_order)

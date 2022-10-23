@@ -1,4 +1,4 @@
-from collections import Callable
+from collections.abc import Callable
 from typing import Union
 
 from beartype import beartype
@@ -107,4 +107,13 @@ class CardSorter:
         for index, key in enumerate(requirement_graph.keys()):
             add_and_prune(key, index)
 
+        if not len(card_queue) == len(self.cids):
+            unsatisfied_dependencies = {cid: required_cids for cid, required_cids in requirement_graph.items() if required_cids}
+            raise PrerequisiteLoopError(f'Unsatisfied dependencies: {unsatisfied_dependencies}')
+
         return card_queue
+
+
+class PrerequisiteLoopError(Exception):
+    pass
+

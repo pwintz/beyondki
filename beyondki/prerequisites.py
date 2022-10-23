@@ -13,7 +13,7 @@ def parse_prerequisite_tag(tag: str) -> Optional[str]:
     Otherwise, return ``None``.
     """
     if tag.startswith(PREFIX):
-        return tag[len(PREFIX) :]
+        return tag[len(PREFIX):]
     return None
 
 
