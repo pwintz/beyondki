@@ -56,7 +56,7 @@ def main() -> None:
     cids = list(range(1, n_cards+1))
 
     sorter = beyondki.sorting.CardSorter(cids, prereq_loop, cid_order)
-    card_queue = sorter.sort()
+    card_queue = sorter.sort_graphs()
 
     print()
     print(card_queue)
