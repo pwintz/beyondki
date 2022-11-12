@@ -4,7 +4,8 @@ import beyondki.sorting
 
 
 def dense_prereqs(cid):
-    # Create a maximally dense requirement_graph by making each card depend on all other
+    # Create a maximally dense requirement_graph by
+    # making each card depend on all other
     # cards that have a lower cid.
     return list(range(1, cid))
 
