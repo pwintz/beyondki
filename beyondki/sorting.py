@@ -9,7 +9,7 @@ from beartype import beartype
 CardGraph = dict[CardId, Union[list[CardId], None]]
 
 
-@beartype
+# @beartype
 def sort(cids: Sequence[CardId],
          prereq_provider: Callable[CardId, list[CardId]],
          cid_order_provider: Callable[CardId, int]) -> list[CardId]:
@@ -26,7 +26,7 @@ def sort(cids: Sequence[CardId],
     return sort_graphs(requirement_graph, dependents_graph)
 
 
-@beartype
+# @beartype
 def generate_card_graphs(cids: list[CardId],
                          prereq_provider: Callable[[CardId], list[CardId]],
                          new_card_position_provider: Callable[[CardId], int]):
